@@ -7,7 +7,15 @@
 flow(Id, NameMsg, Options, [Id, NameMsg, NewOption]):-
     appendById(Options, [], [],NewOption).
 %....................Pertenencia....................
-
+% isFlow/2
+% dom:
+% Meta primaria:
+% Metas secundarias:
+% Clausulas:
+isFlow([Id,NameMsg,Options]):-
+    integer(Id),
+    string(NameMsg),
+    is_list(Options).
 
 %....................Selectores....................
 % getFlowId/2

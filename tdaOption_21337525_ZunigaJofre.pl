@@ -7,6 +7,17 @@
 option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword]).
 
 %....................Pertenencia....................
+%
+% dom:
+% Meta primaria:
+% Metas secundarias:
+% Clausulas:
+isOption([Code,Message,ChatbotCodeLink,InicialFlowCodeLink,Keyword]):-
+    integer(Code),
+    string(Message),
+    integer(ChatbotCodeLink),
+    integer(InicialFlowCodeLink),
+    is_list(Keyword).
 
 %....................Selectores....................
 % getOptionCode/2
