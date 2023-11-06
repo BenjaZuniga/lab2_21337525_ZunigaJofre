@@ -1,12 +1,5 @@
 %....................TDA Option.....................
-% Option = Code X Message X ChatbotCodeLink X InicialFlowCodeLink X
-% Keyword
-%
-% Code = Int
-% Message = String
-% ChatbotCodeLink = Int
-% InicialFlowCodeLink = Int
-% Keyword = List
+% Option = Code X Message X ChatbotCodeLink X InicialFlow
 
 %....................Constructor....................
 % option/6
