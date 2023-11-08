@@ -15,10 +15,9 @@
 % Keyword X Option
 % Meta primaria: option/6
 % Metas secundarias: number_string/2, keywordDowncase/3
-% Clausulas:
-option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Message, ChatbotCodeLink, InicialFlowCodeLink, [Id |NewKeyword]]):-
+/*option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Message, ChatbotCodeLink, InicialFlowCodeLink, [Id |NewKeyword]]):-
     number_string(Code,Id),
-    keywordDowncase(Keyword,[],NewKeyword).
+    keywordDowncase(Keyword,[],NewKeyword).*/
 
 %....................Pertenencia....................
 % isOption/1
@@ -26,7 +25,6 @@ option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Mess
 % Dominio: List
 % Meta primaria: isOption/1
 % Metas secundarias: integer/1, string/1, is_list/1
-% Clausulas:
 isOption([Code,Message,ChatbotCodeLink,InicialFlowCodeLink,Keyword]):-
     integer(Code),
     string(Message),
@@ -48,7 +46,6 @@ getOptionCode([Code, _, _, _, _], Code).
 % Dominio: Option X Message
 % Meta primaria: getOptionMessage/2
 % Metas secundarias: Ninguna
-% Clausulas:
 getOptionMessage([_, Message, _, _, _], Message).
 
 % getOptionCbCL/2
@@ -64,7 +61,6 @@ getOptionCbCL([_, _, ChatbotCodeLink, _, _], ChatbotCodeLink).
 % Dominio: Option X InicialFlowCodeLink
 % Meta primaria: getOptionIFCL/2
 % Metas secundarias: Ninguna
-% Clausulas:
 getOptionIFCL([_, _, _, InicialFlowCodeLink , _], InicialFlowCodeLink).
 
 % getOptionKeyword/2
@@ -72,7 +68,6 @@ getOptionIFCL([_, _, _, InicialFlowCodeLink , _], InicialFlowCodeLink).
 % Dominio: Option X Keyword
 % Meta primaria: getOptionKeyword/2
 % Metas secundarias: Ninguna
-% Clausulas:
 getOptionKeyword([_, _, _, _, Keyword], Keyword).
 
 
@@ -84,7 +79,6 @@ getOptionKeyword([_, _, _, _, Keyword], Keyword).
 % X List X NewKeyword
 % Meta primaria: keywordDowncase/3
 % Metas secundarias: string_lower/2, keywordDowncase/3
-% Clausulas:
 
 %Caso Base: Si el Keyword es vacio devuelve el acumulador
 keywordDowncase([],Aux,Aux).

@@ -1,3 +1,6 @@
+?-consult('tdaFlow_21337525_ZunigaJofre.pl').
+?-consult('tdaOption_21337525_ZunigaJofre.pl').
+
 %....................TDA Chatbot....................
 % Chatbot = ChatbotId X Name X WelcomeMessage X StartFlowId X Flows
 %
@@ -14,9 +17,9 @@
 % Flow
 % Meta primaria: chatbot/6
 % Metas secundarias: appendFlowById/4
-chatbot(ChatbotId, Name, WelcomeMessage,StartFlowId, Flows, [ChatbotId, Name, WelcomeMessage,StartFlowId, NewFlows]):-
+/*chatbot(ChatbotId, Name, WelcomeMessage,StartFlowId, Flows, [ChatbotId, Name, WelcomeMessage,StartFlowId, NewFlows]):-
     appendFlowById(Flows,[], [], AuxFlows),
-    reverse(AuxFlows, NewFlows).
+    reverse(AuxFlows, NewFlows).*/
 
 %....................Pertenencia....................
 % isChatbot/1
@@ -80,17 +83,17 @@ getChatbotFlows([_,_,_,_,Flows],Flows).
 % appendFlow/3
 
 % Caso 1:
-chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, Flows]):-
+/*chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, Flows]):-
     getAllFlowIds(Flows,[],AllIds),
     getFlowId(Flow,Id),
-    member(Id,AllIds).
+    member(Id,AllIds).*/
 
 % Caso 2:
-chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, NewFlows]):-
+/*chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, NewFlows]):-
     getAllFlowIds(Flows,[],AllIds),
     getFlowId(Flow,Id),
     \+ member(Id,AllIds),
-    appendFlow(Flows, Flow, NewFlows).
+    appendFlow(Flows, Flow, NewFlows).*/
 
 %....................Otros....................
 % appendFlowById/4

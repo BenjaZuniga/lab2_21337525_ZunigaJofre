@@ -1,3 +1,6 @@
+?-consult('tdaChatbot_21337525_ZunigaJofre.pl').
+?-consult('tdaFlow_21337525_ZunigaJofre.pl').
+?-consult('tdaOption_21337525_ZunigaJofre.pl').
 
 %....................TDA System....................
 % System = Name X InicialChatbotCodeLink X StartFlowCodeLink X
@@ -18,9 +21,9 @@
 % Dominio: Name X InicialChatbotCodeLink X Chatbots X System
 % Meta primaria: system/4
 % Metas secuandarias: appendChatbotById/4, getStartFlowCodeLink/3
-system(Name, InicialChatbotCodeLink,Chatbots,[Name,InicialChatbotCodeLink, SFCL,0,[],[],[],[],NewChatbots]):-
+/*system(Name, InicialChatbotCodeLink,Chatbots,[Name,InicialChatbotCodeLink, SFCL,0,[],[],[],[],NewChatbots]):-
         appendChatbotById(Chatbots,[],[],NewChatbots),
-        getStartFlowCodeLink(InicialChatbotCodeLink,NewChatbots,SFCL).
+        getStartFlowCodeLink(InicialChatbotCodeLink,NewChatbots,SFCL).*/
 %....................Pertenencia....................
 
 %....................Selectores....................
@@ -101,17 +104,17 @@ getSystemChatbots([_,_,_,_,_,_,_,_,Chatbots],Chatbots).
 
 % Caso 1: Si el id del Chatbot está repetido se regresa el System sin
 % modificaciones
-systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
+/*systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
     getAllChatbotsIds(Chatbots,[],AllIds),
     getChatbotId(Chatbot,Id),
-    member(Id,AllIds).
+    member(Id,AllIds).*/
 
 % Caso 2: Si el Id del Chatbot no está repetido se retorna un System con
 % el Chatbot agregado
-systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions,[Chatbot | Chatbots]]):-
+/*systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions,[Chatbot | Chatbots]]):-
     getAllChatbotsIds(Chatbots,[],AllIds),
     getChatbotId(Chatbot,Id),
-    \+ member(Id,AllIds).
+    \+ member(Id,AllIds).*/
 
 % systemAddUser/3
 % Descripción: Predicado que agrega un Usuario al System si este no
@@ -121,12 +124,14 @@ systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUser
 % Metas secundarias: member/2
 
 % Caso 1:
-systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    member(User,RegisterUsers).
+/*systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
+    member(User,RegisterUsers).*/
+
 
 % Caso 2:
-systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,[User | RegisterUsers],LoginUser,[[User, ""]|ChatHistory],ActualOptions, Chatbots]):-
-    \+ member(User,RegisterUsers).
+/*systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,[User | RegisterUsers],LoginUser,[[User, ""]|ChatHistory],ActualOptions, Chatbots]):-
+    \+ member(User,RegisterUsers).*/
+
 
 % systemLogin/3
 % Descripción: Predicado que Logea un usuario si no existe otro usuario
@@ -137,12 +142,12 @@ systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,L
 
 % Caso 1: Si el usuario está en RegisterUsers y no hay un usuario
 % logeado, se logea e usuario
-systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,[User],ChatHistory,ActualOptions, Chatbots]):-
+/*systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,[User],ChatHistory,ActualOptions, Chatbots]):-
     member(User,RegisterUsers),
-    length(LoginUser,0).
+    length(LoginUser,0).*/
 
 % CAso 2: Sino devuelve el un system igual al ingresado
-systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]).
+/*systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]).*/
 
 % systemLogout/2
 % Descripción: Se deslogea el usuario logeado si es que hay, sino
@@ -150,7 +155,7 @@ systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,Log
 % Dominio: System X NewSystem
 % Meta primaria: systemLogout/2
 % Metas secundarias: Ninguna
-systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,_,ChatHistory,ActualOptions, Chatbots],[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,[],ChatHistory,ActualOptions, Chatbots]).
+/*systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,_,ChatHistory,ActualOptions, Chatbots],[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,[],ChatHistory,ActualOptions, Chatbots]).*/
 
 
 %....................Otros....................
@@ -270,13 +275,14 @@ findOption([_, _,_,_,_,_,_,[First | Remaining],_],Message,CbCL,FCL):-
 % Metas secundarias: getChatAndSystem/4, searchRec/6, finOption/4
 
 % Caso 1: Si no hay un usuario logeado en el sistema no se hace nada
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    length(LoginUser,0).
+/*systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
+    length(LoginUser,0).*/
+
 
 % Caso 2: Si hay un usuario logeado pero no hay ActualOptions se busca
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % System
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
+/*systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
     length(ActualOptions,0),
     getChatAndSystem([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser],ChatHistory,ActualOptions, Chatbots],[],AuxString,AuxSystem),
     string_lower(Message,DowncaseMessage),
@@ -288,12 +294,13 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[
     string_concat(AuxString3,": ",AuxString4),
     string_concat(AuxString4,DowncaseMessage,AuxString5),
     string_concat(AuxString5,"\n",NewString),
-    searchRec(InicialChatbotCodeLink,StartFlowCodeLink,Chatbots,NewString,AuxSystem,NewSystem).
+    searchRec(InicialChatbotCodeLink,StartFlowCodeLink,Chatbots,NewString,AuxSystem,NewSystem).*/
+
 
 % Caso 3:  Si hay un usuario logeado y hay ActualOptions se buscan
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % Option que contien en su Keyword el Message
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
+/*systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
     \+ length(ActualOptions,0),
     getChatAndSystem([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser],ChatHistory,ActualOptions, Chatbots],[],AuxString,AuxSystem),
     string_lower(Message,DowncaseMessage),
@@ -306,7 +313,8 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[
     string_concat(AuxString3,": ",AuxString4),
     string_concat(AuxString4,DowncaseMessage,AuxString5),
     string_concat(AuxString5,"\n",NewString),
-    searchRec(ICbCL,SFCL,Chatbots,NewString,AuxSystem,NewSystem).
+    searchRec(ICbCL,SFCL,Chatbots,NewString,AuxSystem,NewSystem).*/
+
 
 % searchRec/6
 % Descripción: Predicado que busca el Chatob y Flow que tienen el Id
@@ -336,6 +344,7 @@ searchRec(ICbCL,SFCL,[FirstCb|_],ChatString,AuxSystem,NewSystem):-
     string_concat(AuxString2,Name,AuxString3),
     string_concat(AuxString3,": ",NewString),
     searchRec(_,SFCL,Flows,NewString,AuxSystem,NewSystem).
+
 
 % Caso 2: Si el primer elemento del contenedor de TDAs es un Chatbot y
 % no coincide su Id con el que se está buscando se sigue buscando con el
@@ -379,10 +388,21 @@ searchRec(_,SFCL,[FirstFlow|Remaining],ChatString,AuxSystem,NewSystem):-
 
 % Caso base: Si el primer ChatHistory es del usuario pedido, se retorna
 % su ChatString
-systemSynthesis([_, _,_,_,_,_,[[User,ChatString]|_],_, _],User,ChatString).
+/*systemSynthesis([_, _,_,_,_,_,[[User,ChatString]|_],_, _],User,ChatString).*/
 
 % Caso 1:Si el primer ChatHistory no es del usuario pedido, se busca en
 % el siguiente ChatHistory
-systemSynthesis([_, _,_,_,_,_,[[UserChat,_]|Remaining],_, _],User,String):-
+/*systemSynthesis([_, _,_,_,_,_,[[UserChat,_]|Remaining],_, _],User,String):-
     \+ User = UserChat,
-    systemSynthesis([_, _,_,_,_,_,[Remaining],_, _],User,String).
+    systemSynthesis([_, _,_,_,_,_,[Remaining],_, _],User,String).*/
+
+% myRandom/2
+% Descripción: Predicado que genera un número pseudo-aleatorio
+% respetando el principio de transparencia referencial
+% Dominio: Int X Int
+% Meta primaria: myRandom/2
+% Metas secundarias: Ninguna
+myRandom(Xn, Xn1):-
+	MulTemp is 1103515245 * Xn,
+	SumTemp is  12345 + MulTemp,
+	Xn1 is SumTemp mod 2147483648.
