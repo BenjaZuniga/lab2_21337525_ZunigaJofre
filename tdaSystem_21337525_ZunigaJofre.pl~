@@ -1,6 +1,4 @@
 ?-consult('tdaChatbot_21337525_ZunigaJofre.pl').
-?-consult('tdaFlow_21337525_ZunigaJofre.pl').
-?-consult('tdaOption_21337525_ZunigaJofre.pl').
 
 %....................TDA System....................
 % System = Name X InicialChatbotCodeLink X StartFlowCodeLink X
@@ -169,14 +167,8 @@ getSystemChatbots([_,_,_,_,_,_,_,_,Chatbots],Chatbots).
 % Caso base: Si Chatbots es vacio retorna el acumulador de los Chatbot
 appendChatbotById([],Chatbots,_,Chatbots).
 
-% Caso 1: Si el Id del primer Chatbot ya fue agregado, no se acumula y
-% se sigue con el resto de Chatbots
-appendChatbotById([Chatbot | RestChatbots],Chatbots,Ids,NewChatbots):-
-    getChatbotId(Chatbot, Id),
-    member(Id, Ids),
-    appendChatbotById(RestChatbots,Chatbots,Ids,NewChatbots).
 
-% Caso 2:Si el Id del primer Chatbot no ha sido agregado, se acumula
+% Caso 1:Si el Id del primer Chatbot no ha sido agregado, se acumula
 % y se sigue con el resto de Chatbots
 appendChatbotById([Chatbot | RestChatbots],Chatbots,Ids, NewChatbots):-
     getChatbotId(Chatbot, Id),
@@ -396,13 +388,13 @@ searchRec(_,SFCL,[FirstFlow|Remaining],ChatString,AuxSystem,NewSystem):-
     \+ User = UserChat,
     systemSynthesis([_, _,_,_,_,_,[Remaining],_, _],User,String).*/
 
+% myRandom/2
+% Descripción: Predicado que genera un número pseudo-aleatorio
+% respetando el principio de transparencia referencial
+% Dominio: Int X Int
+% Meta primaria: myRandom/2
+% Metas secundarias: Ninguna
 myRandom(Xn, Xn1):-
-	mulTemp(Xn, A),
-	sumTemp(A,B),
-	Xn1 is B mod 2147483648.
-
-mulTemp(A,B):-
-    B is 1103515245 * A.
-
-sumTemp(A,B):-
-    B is 12345 + A.
+	MulTemp is 1103515245 * Xn,
+	SumTemp is  12345 + MulTemp,
+	Xn1 is SumTemp mod 2147483648.

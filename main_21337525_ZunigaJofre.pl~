@@ -1,7 +1,4 @@
 ?-consult('tdaSystem_21337525_ZunigaJofre.pl').
-?-consult('tdaChatbot_21337525_ZunigaJofre.pl').
-?-consult('tdaFlow_21337525_ZunigaJofre.pl').
-?-consult('tdaOption_21337525_ZunigaJofre.pl').
 
 %..............................RF1..............................
 
@@ -51,7 +48,6 @@
 % Keyword X Option
 % Meta primaria: option/6
 % Metas secundarias: number_string/2, keywordDowncase/3
-% Clausulas:
 option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Message, ChatbotCodeLink, InicialFlowCodeLink, [Id |NewKeyword]]):-
     number_string(Code,Id),
     keywordDowncase(Keyword,[],NewKeyword).
@@ -62,9 +58,9 @@ option(Code, Message, ChatbotCodeLink, InicialFlowCodeLink, Keyword, [Code, Mess
 % Dominio: Id X NameMsg X Options X Flow
 % Meta primaria: flow/4
 % Metas secundarias: appendById/4
-% Clausulas:
 flow(Id, NameMsg, Options, [Id, NameMsg, NewOption]):-
-    appendById(Options, [], [],NewOption).
+    appendById(Options, [], [],AuxOption),
+    reverse(AuxOption,NewOption).
 
 %..............................RF4..............................
 % flowAddOption/3
@@ -73,22 +69,12 @@ flow(Id, NameMsg, Options, [Id, NameMsg, NewOption]):-
 % Dominnio: Flow X Option X NewFlow
 % Meta primaria: flowAddOption/3
 % Metas secundarias: getAllOptionsIds/3, getOptionCode/2, member/2
-% Clausulas:
-
-% Caso 1: Si el Id del Option que se intenta agregar está repetido se
-% retorna el mismo flow
-flowAddOption([Id,Name,Options],Option,[Id,Name,Options]):-
+flowAddOption([Id,Name,Options],Option,[Id,Name,NewOptions]):-
     getAllOptionIds(Options,[],AllIds),
     getOptionCode(Option,Code),
-    member(Code,AllIds).
-
-% Caso 2: Si el Ide del Option que se intenta agregar no está repetido
-% se retorna un NewFlow donde su Option contiene el Option que se quería
-% agregar
-flowAddOption([Id,Name,Options],Option,[Id,Name,[Option | Options]]):-
-    getAllOptionIds(Options,[],AllIds),
-    getOptionCode(Option,Code),
-    \+ member(Code,AllIds).
+    \+ member(Code,AllIds),
+    reverse(Options,AuxOptions),
+    reverse([Option|AuxOptions],NewOptions).
 
 %..............................RF5..............................
 % chatbot/6
@@ -110,19 +96,12 @@ chatbot(ChatbotId, Name, WelcomeMessage,StartFlowId, Flows, [ChatbotId, Name, We
 % Meta primaria: chatbotAddFlow/3
 % Metas secundarias: getAllFlowIds/3, getFlowId/2, member/2
 % appendFlow/3
-
-% Caso 1:
-chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, Flows]):-
-    getAllFlowIds(Flows,[],AllIds),
-    getFlowId(Flow,Id),
-    member(Id,AllIds).
-
-% Caso 2:
 chatbotAddFlow([ChatbotId, Name, WelcomeMessage,StartFlowId, Flows],Flow,[ChatbotId, Name, WelcomeMessage,StartFlowId, NewFlows]):-
     getAllFlowIds(Flows,[],AllIds),
     getFlowId(Flow,Id),
     \+ member(Id,AllIds),
     appendFlow(Flows, Flow, NewFlows).
+
 %..............................RF7..............................
 % system/4
 % Descripción: Predicado que crea un System
@@ -140,16 +119,6 @@ system(Name, InicialChatbotCodeLink,Chatbots,[Name,InicialChatbotCodeLink, SFCL,
 % Dominio: System X Chatbot X NewSystem
 % Meta primaria: systemAddChatbot/3
 % Metas secundarias: getAllChatbotsIds/3, getChatbotId/2, member/2
-
-% Caso 1: Si el id del Chatbot está repetido se regresa el System sin
-% modificaciones
-systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    getAllChatbotsIds(Chatbots,[],AllIds),
-    getChatbotId(Chatbot,Id),
-    member(Id,AllIds).
-
-% Caso 2: Si el Id del Chatbot no está repetido se retorna un System con
-% el Chatbot agregado
 systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,Chatbot,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions,[Chatbot | Chatbots]]):-
     getAllChatbotsIds(Chatbots,[],AllIds),
     getChatbotId(Chatbot,Id),
@@ -162,12 +131,6 @@ systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUser
 % Dominio: System X User X New System
 % Meta primaria: systemAddUser/3
 % Metas secundarias: member/2
-
-% Caso 1:
-systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots] ,User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    member(User,RegisterUsers).
-
-% Caso 2:
 systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,[User | RegisterUsers],LoginUser,[[User, ""]|ChatHistory],ActualOptions, Chatbots]):-
     \+ member(User,RegisterUsers).
 
@@ -185,9 +148,6 @@ systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,Log
     member(User,RegisterUsers),
     length(LoginUser,0).
 
-% Caso 2: Sino devuelve el un system igual al ingresado
-systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]).
-
 %..............................RF11..............................
 % systemLogout/2
 % Descripción: Se deslogea el usuario logeado si es que hay, sino
@@ -195,7 +155,8 @@ systemLogin([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,Log
 % Dominio: System X NewSystem
 % Meta primaria: systemLogout/2
 % Metas secundarias: Ninguna
-systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,_,ChatHistory,ActualOptions, Chatbots],[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,[],ChatHistory,ActualOptions, Chatbots]).
+systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,_,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],[Name, InicialChatbotCodeLink,StartFlowCodeLink,0,RegisterUsers,[],ChatHistory,ActualOptions, Chatbots]):-
+    length(LoginUser, 1).
 
 %..............................RF12..............................
 % systemTalkRec/3
@@ -211,7 +172,7 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,L
 % Caso 2: Si hay un usuario logeado pero no hay ActualOptions se busca
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % System
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
+systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
     length(ActualOptions,0),
     getChatAndSystem([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser],ChatHistory,ActualOptions, Chatbots],[],AuxString,AuxSystem),
     string_lower(Message,DowncaseMessage),
@@ -225,10 +186,11 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[
     string_concat(AuxString5,"\n",NewString),
     searchRec(InicialChatbotCodeLink,StartFlowCodeLink,Chatbots,NewString,AuxSystem,NewSystem).
 
+
 % Caso 3:  Si hay un usuario logeado y hay ActualOptions se buscan
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % Option que contien en su Keyword el Message
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser|_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
+systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
     \+ length(ActualOptions,0),
     getChatAndSystem([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser],ChatHistory,ActualOptions, Chatbots],[],AuxString,AuxSystem),
     string_lower(Message,DowncaseMessage),
@@ -272,7 +234,8 @@ systemSynthesis([_, _,_,_,_,_,[[UserChat,_]|Remaining],_, _],User,String):-
 % systemTalkRec/3, systemLogout/2, systemAddUser/3, systemLogin/3,
 % systemSimulate/4, getSystemActualOptions/2
 
-% Caso 1:
+% Caso 1: Si queda una interaccion por hacer se hace "manual" para salir
+% del loop
 systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     MaxInteractions = 1,
     myRandom(Seed,NewSeed),
@@ -284,10 +247,14 @@ systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     number_string(Option1,OptionMessage),
     systemTalkRec(System,OptionMessage,NewSystem).
 
-% Caso 2:
+% Caso 2: Si el sistema no está simulando se "resetea", deslogeando, se
+% agrega un userSeed y se conversa con systemTalkRec y se establece un 1
+% en systemSimulateOn para notar que el sistema está simulando
 systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     getSystemSimulateOn(System,SO),
     SO = 0,
+    getSystemLoginUser(System, LoginUser),
+    length(LoginUser, 1),
     systemLogout(System,AuxSystem1),
     number_string(Seed,SSeed),
     string_concat("user",SSeed,NewUser),
@@ -297,7 +264,24 @@ systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     MI is MaxInteractions - 1,
     systemSimulate([Name, InicialChatbotCodeLink,StartFlowCodeLink,1,RegisterUsers,LoginUser,ChatHistory,Options, Chatbots],MI,Seed,NewSystem).
 
-% Caso 3:
+% Caso 3: Si el sistema no está simulando se "resetea", deslogeando, se
+% agrega un userSeed y se conversa con systemTalkRec y se establece un 1
+% en systemSimulateOn para notar que el sistema está simulando
+systemSimulate(System,MaxInteractions,Seed,NewSystem):-
+    getSystemSimulateOn(System,SO),
+    SO = 0,
+    number_string(Seed,SSeed),
+    string_concat("user",SSeed,NewUser),
+    systemAddUser(System,NewUser,AuxSystem2),
+    systemLogin(AuxSystem2,NewUser,AuxSystem3),
+    systemTalkRec(AuxSystem3,"hola",[Name, InicialChatbotCodeLink,StartFlowCodeLink,_,RegisterUsers,LoginUser,ChatHistory,Options, Chatbots]),
+    MI is MaxInteractions - 1,
+    systemSimulate([Name, InicialChatbotCodeLink,StartFlowCodeLink,1,RegisterUsers,LoginUser,ChatHistory,Options, Chatbots],MI,Seed,NewSystem).
+
+
+% Caso 4: Si ya se inicio una simulación se genera un nuevo numero
+% aleatorio para encontrar un número de opcion aleatorio y se simula
+% hasta que quede una interaccion por hacer
 systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     getSystemSimulateOn(System,SO),
     SO = 1,

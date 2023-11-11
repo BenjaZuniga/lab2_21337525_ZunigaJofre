@@ -84,15 +84,7 @@ getFlowOption([_, _, Option], Option).
 % Caso base: Si el Option es vacio retorna el acumulador
 appendById([],A,_,A).
 
-% Caso 1: Si el Code de primer TDA Option del Option de un Flow tiene un
-% id repetido no se agrega la cabeza al acumulador, y se sige con la
-% cola del Option
-appendById([Option | Rest],Options,Ids,NewOption):-
-    getOptionCode(Option, Code),
-    member(Code, Ids),
-    appendById(Rest,Options,Ids,NewOption).
-
-% Caso 2: Si el Id del primer TDA Option del Option de un Flow tiene un
+% Caso 1: Si el Id del primer TDA Option del Option de un Flow tiene un
 % Code no repetido se agrega el Option al acumulador
 appendById([Option | Rest],Options,Ids, NewOption):-
     getOptionCode(Option, Code),

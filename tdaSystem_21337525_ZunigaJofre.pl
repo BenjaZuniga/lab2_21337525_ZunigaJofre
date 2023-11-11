@@ -1,6 +1,4 @@
 ?-consult('tdaChatbot_21337525_ZunigaJofre.pl').
-?-consult('tdaFlow_21337525_ZunigaJofre.pl').
-?-consult('tdaOption_21337525_ZunigaJofre.pl').
 
 %....................TDA System....................
 % System = Name X InicialChatbotCodeLink X StartFlowCodeLink X
@@ -169,14 +167,8 @@ getSystemChatbots([_,_,_,_,_,_,_,_,Chatbots],Chatbots).
 % Caso base: Si Chatbots es vacio retorna el acumulador de los Chatbot
 appendChatbotById([],Chatbots,_,Chatbots).
 
-% Caso 1: Si el Id del primer Chatbot ya fue agregado, no se acumula y
-% se sigue con el resto de Chatbots
-appendChatbotById([Chatbot | RestChatbots],Chatbots,Ids,NewChatbots):-
-    getChatbotId(Chatbot, Id),
-    member(Id, Ids),
-    appendChatbotById(RestChatbots,Chatbots,Ids,NewChatbots).
 
-% Caso 2:Si el Id del primer Chatbot no ha sido agregado, se acumula
+% Caso 1:Si el Id del primer Chatbot no ha sido agregado, se acumula
 % y se sigue con el resto de Chatbots
 appendChatbotById([Chatbot | RestChatbots],Chatbots,Ids, NewChatbots):-
     getChatbotId(Chatbot, Id),
@@ -367,8 +359,7 @@ searchRec(_,SFCL,[FirstFlow|_],ChatString,[Name, InicialChatbotCodeLink,StartFlo
     getFlowName(FirstFlow,FlowName),
     string_concat(ChatString,FlowName,AuxString1),
     string_concat(AuxString1,"\n",AuxString2),
-    reverse(Options,RevOptions),
-    getAllOptionMessages(RevOptions,AuxString2,NewString).
+    getAllOptionMessages(Options,AuxString2,NewString).
 
 % Caso 4: Si el primer elemento del contenedor de TDAs es un Flow y
 % no coincide su Id con el que se está buscando se sigue buscando con el

@@ -1,5 +1,4 @@
 ?-consult('tdaFlow_21337525_ZunigaJofre.pl').
-?-consult('tdaOption_21337525_ZunigaJofre.pl').
 
 %....................TDA Chatbot....................
 % Chatbot = ChatbotId X Name X WelcomeMessage X StartFlowId X Flows
@@ -107,12 +106,6 @@ getChatbotFlows([_,_,_,_,Flows],Flows).
 appendFlowById([],Flows,_,Flows).
 
 % Caso 1:
-appendFlowById([Flow | RestFlows],Flows,Ids,NewFlows):-
-    getFlowId(Flow, Id),
-    member(Id, Ids),
-    appendFlowById(RestFlows,Flows,Ids,NewFlows).
-
-% Caso 2:
 appendFlowById([Flow | RestFlows],Flows,Ids, NewFlows):-
     getFlowId(Flow, Id),
     \+ member(Id,Ids),

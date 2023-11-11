@@ -11,16 +11,15 @@
 % Dominio: Id X NameMsg X Options X Flow
 % Meta primaria: flow/4
 % Metas secundarias: appendById/4
-% Clausulas:
-flow(Id, NameMsg, Options, [Id, NameMsg, NewOption]):-
-    appendById(Options, [], [],NewOption).
+/*flow(Id, NameMsg, Options, [Id, NameMsg, NewOption]):-
+    appendById(Options, [], [],NewOption).*/
 %....................Pertenencia....................
 % isFlow/1
 % Descripción: Predicado que verifica si una lista es un TDA Flow
 % Dominio: List
 % Meta primaria: isFlow/1
 % Metas secundarias: integer/1, string/1, is_list/1
-% Clausulas:
+
 isFlow([Id,NameMsg,Options]):-
     integer(Id),
     string(NameMsg),
@@ -32,7 +31,6 @@ isFlow([Id,NameMsg,Options]):-
 % Dominio: Flow X Id
 % Meta primaria: getFlowId/2
 % Metas secundarias: Ninguna
-% Clausulas:
 getFlowId([Id, _, _], Id).
 
 % getFlowName/2
@@ -48,7 +46,6 @@ getFlowName([_, Name, _], Name).
 % Dominio: Flow X Option
 % Meta primaria: getFlowOption/2
 % Metas secundarias: Ninguna
-% Clausulas:
 getFlowOption([_, _, Option], Option).
 
 %....................Modificadores....................
@@ -58,22 +55,21 @@ getFlowOption([_, _, Option], Option).
 % Dominnio: Flow X Option X NewFlow
 % Meta primaria: flowAddOption/3
 % Metas secundarias: getAllOptionsIds/3, getOptionCode/2, member/2
-% Clausulas:
 
 % Caso 1: Si el Id del Option que se intenta agregar está repetido se
 % retorna el mismo flow
-flowAddOption([Id,Name,Options],Option,[Id,Name,Options]):-
+/*flowAddOption([Id,Name,Options],Option,[Id,Name,Options]):-
     getAllOptionIds(Options,[],AllIds),
     getOptionCode(Option,Code),
-    member(Code,AllIds).
+    member(Code,AllIds).*/
 
 % Caso 2: Si el Ide del Option que se intenta agregar no está repetido
 % se retorna un NewFlow donde su Option contiene el Option que se quería
 % agregar
-flowAddOption([Id,Name,Options],Option,[Id,Name,[Option | Options]]):-
+/*flowAddOption([Id,Name,Options],Option,[Id,Name,[Option | Options]]):-
     getAllOptionIds(Options,[],AllIds),
     getOptionCode(Option,Code),
-    \+ member(Code,AllIds).
+    \+ member(Code,AllIds).*/
 
 
 
@@ -84,7 +80,6 @@ flowAddOption([Id,Name,Options],Option,[Id,Name,[Option | Options]]):-
 % Dominio: Option X AuxOption X Ids X NewOption
 % Meta primaria: appendById/4
 % Metas secundarias: getOptionCode/2, member/2, appendById/4
-% Clausulas:
 
 % Caso base: Si el Option es vacio retorna el acumulador
 appendById([],A,_,A).
@@ -110,7 +105,6 @@ appendById([Option | Rest],Options,Ids, NewOption):-
 % Dominio: Option X Ids X AllIds
 % Meta primaria: getAllOptionIds/3
 % Metas secundarias: getOptionCode/2, getAllOptionIds/3
-% Clausulas:
 
 % Caso base: Si el Option es vacio retorna todos los ids
 getAllOptionIds([],Ids,Ids).
@@ -128,8 +122,7 @@ getAllOptionIds([Option | Options], Ids, AllIds):-
 % Meta primaria: getAllOptionMessages/3
 % Metas secundarias: getOptionMessage/2, string_concat/2,
 % getAllOptionMessages/3
-% Clausulas:
-%
+
 % Caso base: Si Option es vacio retorna el string acumulador
 getAllOptionMessages([],String,String).
 
