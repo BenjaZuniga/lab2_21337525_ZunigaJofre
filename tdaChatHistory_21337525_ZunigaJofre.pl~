@@ -1,0 +1,2 @@
+
+chatHistory(User,[User,""]).

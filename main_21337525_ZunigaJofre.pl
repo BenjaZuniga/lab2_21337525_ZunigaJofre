@@ -1,4 +1,5 @@
 ?-consult('tdaSystem_21337525_ZunigaJofre.pl').
+?-consult('tdaChatHistory_21337525_ZunigaJofre.pl').
 
 %..............................RF1..............................
 
@@ -165,11 +166,7 @@ systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,_,RegisterUsers,Log
 % Meta primaria: systemTalkRec/3
 % Metas secundarias: getChatAndSystem/4, searchRec/6, finOption/4
 
-% Caso 1: Si no hay un usuario logeado en el sistema no se hace nada
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    length(LoginUser,0).
-
-% Caso 2: Si hay un usuario logeado pero no hay ActualOptions se busca
+% Caso 1: Si hay un usuario logeado pero no hay ActualOptions se busca
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % System
 systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
@@ -187,7 +184,7 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[
     searchRec(InicialChatbotCodeLink,StartFlowCodeLink,Chatbots,NewString,AuxSystem,NewSystem).
 
 
-% Caso 3:  Si hay un usuario logeado y hay ActualOptions se buscan
+% Caso 2:  Si hay un usuario logeado y hay ActualOptions se buscan
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % Option que contien en su Keyword el Message
 systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-

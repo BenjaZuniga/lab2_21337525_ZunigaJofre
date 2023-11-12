@@ -165,11 +165,7 @@ systemLogout([Name, InicialChatbotCodeLink,StartFlowCodeLink,_,RegisterUsers,Log
 % Meta primaria: systemTalkRec/3
 % Metas secundarias: getChatAndSystem/4, searchRec/6, finOption/4
 
-% Caso 1: Si no hay un usuario logeado en el sistema no se hace nada
-systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],_,[Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots]):-
-    length(LoginUser,0).
-
-% Caso 2: Si hay un usuario logeado pero no hay ActualOptions se busca
+% Caso 1: Si hay un usuario logeado pero no hay ActualOptions se busca
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % System
 systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
@@ -187,7 +183,7 @@ systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[
     searchRec(InicialChatbotCodeLink,StartFlowCodeLink,Chatbots,NewString,AuxSystem,NewSystem).
 
 
-% Caso 3:  Si hay un usuario logeado y hay ActualOptions se buscan
+% Caso 2:  Si hay un usuario logeado y hay ActualOptions se buscan
 % las opciones en base al InicialChatbotCodeLink y StartFlowCodeLink del
 % Option que contien en su Keyword el Message
 systemTalkRec([Name, InicialChatbotCodeLink,StartFlowCodeLink,So,RegisterUsers,[LoginUser |_],ChatHistory,ActualOptions, Chatbots],Message,NewSystem):-
@@ -234,18 +230,8 @@ systemSynthesis([_, _,_,_,_,_,[[UserChat,_]|Remaining],_, _],User,String):-
 % systemTalkRec/3, systemLogout/2, systemAddUser/3, systemLogin/3,
 % systemSimulate/4, getSystemActualOptions/2
 
-% Caso 1: Si queda una interaccion por hacer se hace "manual" para salir
-% del loop
-systemSimulate(System,MaxInteractions,Seed,NewSystem):-
-    MaxInteractions = 1,
-    myRandom(Seed,NewSeed),
-    getSystemActualOptions(System,AO),
-    length(AO,L),
-    L2 is L - 1,
-    Option is (NewSeed mod L2),
-    Option1 is Option + 1,
-    number_string(Option1,OptionMessage),
-    systemTalkRec(System,OptionMessage,NewSystem).
+% Caso 1:
+systemSimulate(System,0,_,System).
 
 % Caso 2: Si el sistema no está simulando se "resetea", deslogeando, se
 % agrega un userSeed y se conversa con systemTalkRec y se establece un 1
