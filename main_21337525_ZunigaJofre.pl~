@@ -1,4 +1,5 @@
 ?-consult('tdaSystem_21337525_ZunigaJofre.pl').
+?-consult('tdaChatHistory_21337525_ZunigaJofre.pl').
 
 %..............................RF1..............................
 
@@ -233,9 +234,9 @@ systemSynthesis([_, _,_,_,_,_,[[UserChat,_]|Remaining],_, _],User,String):-
 % Caso 1:
 systemSimulate(System,0,_,System).
 
-% Caso 2: Si el sistema no está simulando se "resetea", deslogeando, se
-% agrega un userSeed y se conversa con systemTalkRec y se establece un 1
-% en systemSimulateOn para notar que el sistema está simulando
+% Caso 2: Si el sistema no está simulando y hay un usuario logeado,
+% primero lo desloguea, regstra y logea al usuario de la semilla y
+% comienza a simular
 systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     getSystemSimulateOn(System,SO),
     SO = 0,
@@ -250,9 +251,9 @@ systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     MI is MaxInteractions - 1,
     systemSimulate([Name, InicialChatbotCodeLink,StartFlowCodeLink,1,RegisterUsers,LoginUser,ChatHistory,Options, Chatbots],MI,Seed,NewSystem).
 
-% Caso 3: Si el sistema no está simulando se "resetea", deslogeando, se
-% agrega un userSeed y se conversa con systemTalkRec y se establece un 1
-% en systemSimulateOn para notar que el sistema está simulando
+% Caso 3: Si el sistema no está simulando y no hay un usuario logeado,
+% solo registra y logea al usuario de la semilla y comienza a
+% simular
 systemSimulate(System,MaxInteractions,Seed,NewSystem):-
     getSystemSimulateOn(System,SO),
     SO = 0,

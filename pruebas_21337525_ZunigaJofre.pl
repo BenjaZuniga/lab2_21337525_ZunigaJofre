@@ -111,12 +111,11 @@ flow( 2, "Flujo 2 Chatbot2\n Bienvenido\n ¿Que noticia quieres ver?", [Op25, Op2
 flow( 1, "Flujo 1 Chatbot3\n Bienvenido\n ¿Que tema te interesa?", [Op31, Op32, Op33],Fl31 ),
 flow( 2, "Flujo 2 Chatbot3\n Bienvenido\n ¿Que noticia quieres ver?", [Op34, Op35, Op36],Fl32 ),
 flow( 3, "Flujo 3 Chatbot3\n Bienvenido\n ¿Que noticia quieres ver?", [Op37, Op38, Op39], Fl33 ),
-
 % FlowAddOption
 flowAddOption(Fl02, Op01, Fl03),
 flowAddOption(Fl03, Op02, Fl04),
 flowAddOption(Fl04, Op03, Fl05),
-% flowAddOption(Fl11, Op11, Fl13, %Si se descomenta da false por intentar agregar una opcion repetida
+% flowAddOption(Fl11, Op11, Fl13), %Si se descomenta da false por intentar agregar una opcion repetida
 
 % Creacion Chatbots
 % chatbot( 0, "Inicial", "Bienvenido\n", 1, [Fl05,Fl05],Cb0), %Si se descomenta da false por intentar agregar un flujo repetido
@@ -124,8 +123,8 @@ chatbot( 0, "Inicial", "Bienvenido\n", 1, [Fl05],Cb01),
 chatbot( 1, "Noticias Nacionales", "Bienvenido\n", 1, [Fl11, Fl12] , Cb1),
 chatbot( 2, "Noticias Internacionales", "Bienvenido\n", 1, [Fl21, Fl22], Cb2 ),
 chatbot( 3, "Noticias por tema", "Bienvenido\n", 1,[], Cb3),
-
 % chatbotAddFlow( Cb01, Fl05, Cb02) % Si se descomenta da false
+
 chatbotAddFlow( Cb3, Fl31, Cb31),
 chatbotAddFlow( Cb31, Fl32, Cb32),
 chatbotAddFlow( Cb32, Fl33, Cb33),
@@ -147,6 +146,9 @@ systemAddUser( Sy05, "user2", Sy06),
 systemAddUser( Sy06, "user5", Sy07),
 systemAddUser( Sy2, "user1",Sy21),
 
+
+
+
 systemLogin( Sy07, "user1", Sy08),
 systemLogin( Sy21, "user1", Sy22),
 %systemLogin( Sy10, "user1",Sy11), % SI se descomenta da false
@@ -161,27 +163,23 @@ systemLogin(Sy09, "user5", Sy010),
 systemTalkRec( Sy010, "Hola", Sy011),
 systemTalkRec( Sy011, "nacional", Sy012),
 systemTalkRec( Sy012, "1", Sy013),
-% systemTalkRec( Sy23, "1", Sy24), % Si se descomenta da false
+%systemTalkRec( Sy23, "1", Sy24), % Si se descomenta da false
 
 
 systemSynthesis(Sy013, "user5", Str1),
 write(Str1),
 
-%Simulacion en un sistema sin usuario logeado
+
 systemSimulate( Sy10, 4 ,1407, Sy12),
 systemSynthesis( Sy12, "user1407",Str2),
 write(Str2),
 
-% Simulacion en un sistema con ususario logeado
-systemAddUser(Sy10, "user7", Sy13),
-systemLogin(Sy13, "user7", Sy14),
-systemSimulate( Sy14, 3, 1211, Sy15),
-systemSynthesis( Sy15, "user1211", Str3),
-write(Str3).
+systemSimulate( Sy10, 3, 789, Sy15),
+systemSynthesis( Sy15, "user789", Str3),
+write(Str3),
 
-% Simulacion en un sistema con los chatbots al reves
-systemSimulate( Sy23, 6, 999999,Sy24),
-systemSynthesis( Sy24, "user999999",Str4),
+systemSimulate( Sy23, 6, 999999,Sy25),
+systemSynthesis( Sy25, "user999999",Str4),
 write(Str4).
 
 */
