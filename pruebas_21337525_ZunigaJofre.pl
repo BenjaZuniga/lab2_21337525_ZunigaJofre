@@ -1,3 +1,4 @@
+?-consult('main_21337525_ZunigaJofre').
 
 % Script Enunciado
 /*
@@ -5,7 +6,7 @@ option(1, "1) Viajar", 1, 1, ["viajar", "turistear", "conocer"], OP1),
 option(2, "2) Estudiar", 2, 1, ["estudiar", "aprender", "perfeccionarme"], OP2),
 flow(1, "flujo1", [OP1], F10),
 flowAddOption(F10, OP2, F11),
-% flowAddOption(F10, OP1, F12), %si esto se descomenta, debe dar false, porque es opción con id duplicada.
+%flowAddOption(F10, OP1, F12), %si esto se descomenta, debe dar false, porque es opción con id duplicada.
 chatbot(0, "Inicial", "Bienvenido\n¿Qué te gustaría hacer?", 1, [F11], CB0), %solo añade una ocurrencia de F11
 %Chatbot1
 option(1, "1) New York, USA", 1, 2, ["USA", "Estados Unidos", "New York"], OP3),
@@ -61,7 +62,7 @@ write(Str2).
 
 % Mi Script
 /*
-% Se crean opciones
+%------option
 % Opciones iniciales
 option( 1,"1)Noticias nacionales", 1, 1, ["nacional", "Chile", "NACIONALES"], Op01),
 option( 2, "2)Noticias internacionales", 2, 1, ["INTER", "internacional", "extranjero"], Op02),
@@ -100,10 +101,13 @@ option( 3, "3)Volver", 3, 1,  ["volver", "ATRAS", "Regresar"], Op39),
 
 
 % Creacion flujos
-% Flow
+%--------flow
+
 % flow( 1, "Flujo Inicial Chatbot0\n Bienvenido\n ¿Qué tipo de noticia quieres ver?", [Op01, Op01, Op02, Op01, Op03], Fl01), % Si se descomenta da false poruq hay opciones repetidas
+
 % Se crea uno flow vacio
 flow( 1, "Flujo Inicial Chatbot0\n Bienvenido\n ¿Qué tipo de noticia quieres ver?", [], Fl02),
+
 flow( 1, "Flujo 1 Chatbot1\n Bienvenido\n ¿De dónde quieres ver noticias?", [Op11,Op12, Op13,Op14,Op15], Fl11 ),
 flow( 2, "Flujo 2 Chatbot1\n Bienvenido\n ¿Que noticia quieres ver?", [Op16, Op17, Op18], Fl12 ),
 flow( 1, "Flujo 1 Chatbot2\n Bienvenido\n ¿De dónde quieres ver noticias?", [Op21, Op22, Op23, Op24], Fl21),
@@ -111,61 +115,67 @@ flow( 2, "Flujo 2 Chatbot2\n Bienvenido\n ¿Que noticia quieres ver?", [Op25, Op2
 flow( 1, "Flujo 1 Chatbot3\n Bienvenido\n ¿Que tema te interesa?", [Op31, Op32, Op33],Fl31 ),
 flow( 2, "Flujo 2 Chatbot3\n Bienvenido\n ¿Que noticia quieres ver?", [Op34, Op35, Op36],Fl32 ),
 flow( 3, "Flujo 3 Chatbot3\n Bienvenido\n ¿Que noticia quieres ver?", [Op37, Op38, Op39], Fl33 ),
-% FlowAddOption
+
+%--------flowAddOption
 flowAddOption(Fl02, Op01, Fl03),
 flowAddOption(Fl03, Op02, Fl04),
 flowAddOption(Fl04, Op03, Fl05),
 % flowAddOption(Fl11, Op11, Fl13), %Si se descomenta da false por intentar agregar una opcion repetida
 
 % Creacion Chatbots
+%--------chatbot
 % chatbot( 0, "Inicial", "Bienvenido\n", 1, [Fl05,Fl05],Cb0), %Si se descomenta da false por intentar agregar un flujo repetido
 chatbot( 0, "Inicial", "Bienvenido\n", 1, [Fl05],Cb01),
 chatbot( 1, "Noticias Nacionales", "Bienvenido\n", 1, [Fl11, Fl12] , Cb1),
 chatbot( 2, "Noticias Internacionales", "Bienvenido\n", 1, [Fl21, Fl22], Cb2 ),
 chatbot( 3, "Noticias por tema", "Bienvenido\n", 1,[], Cb3),
-% chatbotAddFlow( Cb01, Fl05, Cb02) % Si se descomenta da false
 
+%-------chatbotAddFlow
+% chatbotAddFlow( Cb01, Fl05, Cb02), % Si se descomenta da false
 chatbotAddFlow( Cb3, Fl31, Cb31),
 chatbotAddFlow( Cb31, Fl32, Cb32),
 chatbotAddFlow( Cb32, Fl33, Cb33),
 
 % Creacion system
+%--------system
 system("Chatbots Noticias", 0,[Cb01],Sy0 ),
 system("Chatbots Noticias", 0, [Cb01, Cb1, Cb2, Cb33], Sy10),
 % system("Chatbots Noticias", 0, [Cb01, Cb1, Cb2, Cb33, Cb1, Cb33], Sy1), % Si se descomenta da false
 system("Chatbots Noticias", 0, [Cb33, Cb01, Cb1, Cb2],Sy2),
 
+%--------systemAddChatbot
 systemAddChatbot( Sy0, Cb1, Sy01),
 systemAddChatbot( Sy01, Cb2, Sy02),
 systemAddChatbot( Sy02, Cb33, Sy03),
-% systemAddChatbot(Sy2 Cb01,Sy21),%Si se descomenta da false
+% systemAddChatbot(Sy2, Cb01,Sy21),%Si se descomenta da false
 
+%--------systemAddUser
 systemAddUser( Sy03, "user1",Sy05),
-% systemAddUser( my-s11 "user1",Sy06), %Si se descomenta da false
+% systemAddUser( Sy03, "user1",Sy06), %Si se descomenta da false
 systemAddUser( Sy05, "user2", Sy06),
 systemAddUser( Sy06, "user5", Sy07),
 systemAddUser( Sy2, "user1",Sy21),
 
-
-
-
+%--------systemLogin
 systemLogin( Sy07, "user1", Sy08),
 systemLogin( Sy21, "user1", Sy22),
-%systemLogin( Sy10, "user1",Sy11), % SI se descomenta da false
+% systemLogin( Sy10, "user1",Sy11), % SI se descomenta da false
 
+%--------systemLogout
 systemLogout(Sy08,Sy09),
 systemLogout(Sy22,Sy23),
-% systemLogout(Sy08,Sy09), % Si se descomenta da false
+% systemLogout(Sy09,Sy010), % Si se descomenta da false
+
 
 systemLogin(Sy09, "user5", Sy010),
 
-
+%--------systemTalRec
 systemTalkRec( Sy010, "Hola", Sy011),
 systemTalkRec( Sy011, "nacional", Sy012),
 systemTalkRec( Sy012, "1", Sy013),
 %systemTalkRec( Sy23, "1", Sy24), % Si se descomenta da false
 
-
+%--------systemSynthesis y systemSimulate
 systemSynthesis(Sy013, "user5", Str1),
 write(Str1),
 
@@ -174,13 +184,12 @@ systemSimulate( Sy10, 4 ,1407, Sy12),
 systemSynthesis( Sy12, "user1407",Str2),
 write(Str2),
 
-systemSimulate( Sy10, 3, 789, Sy15),
+systemSimulate( Sy10, 4, 789, Sy15),
 systemSynthesis( Sy15, "user789", Str3),
-write(Str3),
+%write(Str3),
 
 systemSimulate( Sy23, 6, 999999,Sy25),
-systemSynthesis( Sy25, "user999999",Str4),
-write(Str4).
-
+systemSynthesis( Sy25, "user999999",Str4).
+%write(Str4).
 */
 

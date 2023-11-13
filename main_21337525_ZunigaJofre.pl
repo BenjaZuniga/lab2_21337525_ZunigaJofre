@@ -132,8 +132,9 @@ systemAddChatbot([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUser
 % Dominio: System X User X New System
 % Meta primaria: systemAddUser/3
 % Metas secundarias: member/2
-systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,[User | RegisterUsers],LoginUser,[[User, ""]|ChatHistory],ActualOptions, Chatbots]):-
-    \+ member(User,RegisterUsers).
+systemAddUser([Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,RegisterUsers,LoginUser,ChatHistory,ActualOptions, Chatbots],User,[Name, InicialChatbotCodeLink,StartFlowCodeLink,SO,[User | RegisterUsers],LoginUser,[NewChatHistory|ChatHistory],ActualOptions, Chatbots]):-
+    \+ member(User,RegisterUsers),
+    chatHistory(User,NewChatHistory).
 
 %..............................RF10..............................
 % systemLogin/3
