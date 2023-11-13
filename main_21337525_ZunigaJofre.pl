@@ -42,6 +42,12 @@
 % ActuaOptions = List
 % Chatbots = List
 
+%....................TDA ChatHistory.....................
+% ChatHistory = User X ChatString
+%
+% User = String
+% ChatString = String
+
 %..............................RF2..............................
 % option/6
 % Descripción: Pridicado que crea un TDA option
